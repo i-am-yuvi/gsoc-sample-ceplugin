@@ -93,6 +93,12 @@ public class CloudEvents extends ManagementLink implements Saveable, Describable
         return "CONFIGURATION";
     }
 
+    public static CloudEvents get(){ return CloudEvents.all().get(CloudEvents.class); }
+
+    public List<String> getEvents() {
+        return events;
+    }
+
     @NonNull
     @Override
     public Permission getRequiredPermission() {
