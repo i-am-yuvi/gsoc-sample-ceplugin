@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
+    <f:section title="${%CDEvents Plugin}">
+
+        <f:entry field="sinkType" title="${%Sink Type}">
+            <select name="sinkType">
+                <f:option selected="${instance.sinkType=='http'}" value="http">HTTP Sink</f:option>
+                <f:option selected="${instance.sinkType=='other'}" value="other">Other Sink</f:option>
+            </select>
+        </f:entry>
+
+
+        <f:entry field="sinkURL" title="${%Sink URL}">
+            <f:textbox field="sinkURL" value="${instance.sinkURL}"/>
+        </f:entry>
+
+        <f:entry title="Job Created" field="created">
+            <f:checkbox checked="${instance.created}"/>
+        </f:entry>
+
+        <f:entry title="Job Started" field="started">
+            <f:checkbox checked="${instance.started}"/>
+        </f:entry>
+
+    </f:section>
+</j:jelly>
