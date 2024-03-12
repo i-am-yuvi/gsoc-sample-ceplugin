@@ -18,6 +18,7 @@ public class ItemListener extends hudson.model.listeners.ItemListener {
         CurrentStage.UPDATED.handleEvent(item, "item");
     }
 
+    @Override
     public void onDeleted(Item item){
         CurrentStage.DELETED.handleEvent(item, "item");
     }
