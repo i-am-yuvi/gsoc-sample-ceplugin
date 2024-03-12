@@ -28,7 +28,7 @@ public enum CurrentStage {
         String sinkUrl = CloudEvents.get().getSinkURL();
 
         for(String event : CloudEvents.get().getEvents()) {
-            if checkBuild(event, run.getResult()) {
+            if (shouldSendBuild(event, run.getResult()) {
 
                 try {
                     JobModel jobModel = buildJobModel(run.getParent(), run, timestamp, taskListener);
