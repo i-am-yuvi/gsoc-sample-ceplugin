@@ -6,8 +6,12 @@
         <f:entry field="sinkType" title="${%Sink Type}">
             <select name="sinkType">
                 <f:option selected="${instance.sinkType=='http'}" value="http">HTTP Sink</f:option>
-                <f:option selected="${instance.sinkType=='other'}" value="other">Other Sink</f:option>
+                <f:option selected="${instance.sinkType=='kafka'}" value="kafka">Kafka Sink</f:option>
             </select>
+        </f:entry>
+
+        <f:entry field="kafka-topic" title="${%Kafka Topic}">
+                <f:textbox field="kafka-topic" value="${instance.kafka-topic}"/>
         </f:entry>
 
 
