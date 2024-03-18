@@ -31,8 +31,6 @@ public class JobModel {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date updatedDate;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Date deletedDate;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String configFile;
@@ -98,14 +96,16 @@ public class JobModel {
     }
 
     public Date getUpdatedDate() {
-        return new Date(updatedDate.getTime());
+        if (updatedDate == null){
+            return (new Date(Date.UTC(2024,03, 18, 22, 45, 41)));
+        } else {
+            return (new Date(updatedDate.getTime()));
+        }
     }
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = new Date(updatedDate.getTime());
     }
-
-    public void setDeletedDate(Date deletedDate){ this.deletedDate = new Date(deletedDate.getTime()); }
 
     public String getStatus() {
         return status;

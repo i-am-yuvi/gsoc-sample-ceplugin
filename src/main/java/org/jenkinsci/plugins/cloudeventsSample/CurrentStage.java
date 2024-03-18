@@ -15,13 +15,40 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public enum CurrentStage {
-    CREATED, UPDATED, DELETED, STARTED, FINALIZED, COMPLETED;
+    CREATED, UPDATED, STARTED, FINALIZED, COMPLETED;
 
     private static final Logger LOGGER = Logger.getLogger("CurrentStage");
 
 
     public void handleEvent(Object o, String type){
+        String sinkURL = CloudEvents.get().getSinkURL();
 
+        Object sendObject = new Object();
+
+        for (String event : CloudEvents.get().getEvents()) {
+            if (shouldSendItem(event)) {
+                try {
+                    switch (type) {
+
+                        case "item":
+                            sendObject = buildJobModel((Item) o);
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    if (CloudEvents.get().getSinkType().equals("http")) {
+                        HTTPSink httpSink = new HTTPSink();
+                        httpSink.sendCloudEvent(sinkURL, sendObject);
+                    }
+
+                } catch (Throwable error) {
+                    LOGGER.log(Level.INFO, "Error: " + error.getMessage());
+                }
+            }
+
+        }
     }
 
     public void handleEvent(Run run, TaskListener taskListener, long timestamp) throws NullPointerException{
@@ -38,9 +65,9 @@ public enum CurrentStage {
                     switch (CloudEvents.get().getSinkType()){
                         case "http":
                             HTTPSink httpsink = new HTTPSink();
-
                             httpsink.sendCloudEvent(sinkUrl, jobModel);
                             break;
+
                         case "kafka":
 //                            KafkaSink kafkaSink = new KafkaSink();
 //                            kafkaSink.sendCloudEvent(sinkUrl, jobModel);
@@ -155,11 +182,6 @@ public enum CurrentStage {
                 jobModel.setStatus("UPDATED");
                 break;
 
-            case DELETED:
-                jobModel.setDeletedDate(new Date());
-                jobModel.setStatus("DELETED");
-                break;
-
             default:
                 jobModel.setStatus(null);
                 break;
@@ -170,6 +192,10 @@ public enum CurrentStage {
 
         return jobModel;
 
+    }
+
+    private boolean shouldSendItem(String event) {
+        return event.equals(this.toString().toLowerCase());
     }
 
     //sending events related to run of a job

@@ -18,14 +18,11 @@ public class CloudEvents extends GlobalConfiguration {
 
     private boolean created;
     private boolean updated;
-    private boolean enteredWaiting;
-    private boolean left;
     private boolean started;
     private boolean completed;
     private boolean finalized;
     private boolean failed;
-    private boolean online;
-    private boolean offline;
+
 
 
     private List<String> events;
@@ -36,14 +33,10 @@ public class CloudEvents extends GlobalConfiguration {
         sinkURL = "";
         created = true;
         updated = true;
-        enteredWaiting = true;
-        left = true;
         started = true;
         completed = true;
         finalized = true;
         failed = true;
-        online = true;
-        offline = true;
         events = new ArrayList<>();
     }
 
@@ -92,25 +85,6 @@ public class CloudEvents extends GlobalConfiguration {
         addOrRemoveEvent(updated, "updated");
     }
 
-    public boolean isEnteredWaiting() {
-        return enteredWaiting;
-    }
-
-    @DataBoundSetter
-    public void setEnteredWaiting(boolean enteredWaiting) {
-        this.enteredWaiting = enteredWaiting;
-        addOrRemoveEvent(enteredWaiting, "entered_waiting");
-    }
-
-    public boolean isLeft() {
-        return left;
-    }
-
-    @DataBoundSetter
-    public void setLeft(boolean left) {
-        this.left = left;
-        addOrRemoveEvent(left, "left");
-    }
 
     public boolean isStarted() {
         return started;
@@ -153,38 +127,11 @@ public class CloudEvents extends GlobalConfiguration {
 
     }
 
-    public boolean isOnline() {
-        return online;
-    }
-
-    @DataBoundSetter
-    public void setOnline(boolean online) {
-        this.online = online;
-        addOrRemoveEvent(online, "online");
-    }
-
-    public boolean isOffline() {
-        return offline;
-    }
-
-    @DataBoundSetter
-    public void setOffline(boolean offline) {
-        this.offline = offline;
-        addOrRemoveEvent(offline, "offline");
-    }
 
     public List<String> getEvents() {
         return events;
     }
 
-    /**
-     * If a particular event is selected in the UI, and the list of events already contains this event do nothing.
-     * Else, add it to the list.
-     * If the event is unselected, remove if from the list of events if it is an element inside the list.
-     *
-     * @param event
-     * @param stringEvent
-     */
     private void addOrRemoveEvent(boolean event, String stringEvent) {
         if (event) {
             if (events.contains(stringEvent)) {
@@ -200,7 +147,6 @@ public class CloudEvents extends GlobalConfiguration {
         }
     }
 
-    // TODO: Move validation to check for different sink types.
     public FormValidation doCheckSinkURL(@QueryParameter(value = "sinkURL") String sinkURL) {
         if (sinkURL == null || sinkURL.isEmpty()) {
             return FormValidation.error("Provide valid Sink URL. " +

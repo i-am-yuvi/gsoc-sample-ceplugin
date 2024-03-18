@@ -3,10 +3,13 @@ package org.jenkinsci.plugins.cloudeventsSample.Sinks;
 import dev.cdevents.CDEvents;
 import dev.cdevents.constants.CDEventConstants;
 import dev.cdevents.events.PipelinerunFinishedCDEvent;
+import dev.cdevents.events.PipelinerunStartedCDEvent;
 import dev.cdevents.events.TaskrunFinishedCDEvent;
 import dev.cdevents.events.TaskrunStartedCDEvent;
+import dev.cdevents.models.pipelinerun.started.Subject;
 import io.cloudevents.CloudEvent;
 import io.cloudevents.core.message.MessageWriter;
+import io.cloudevents.core.v1.CloudEventBuilder;
 import org.jenkinsci.plugins.cloudeventsSample.CloudEvents;
 import org.jenkinsci.plugins.cloudeventsSample.CloudEventsSink;
 import org.jenkinsci.plugins.cloudeventsSample.CloudEventsUtil;
@@ -18,7 +21,9 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.jenkinsci.plugins.cloudeventsSample.CloudEventMessageWriter.createMessageWriter;
@@ -41,24 +46,41 @@ public class HTTPSink extends CloudEventsSink{
 
 
 
-        PipelinerunFinishedCDEvent pipelinerunFinishedCDEvent =  new PipelinerunFinishedCDEvent();
+//        PipelinerunFinishedCDEvent pipelinerunFinishedCDEvent =  new PipelinerunFinishedCDEvent();
+//
+//        /* set the required context fields to the pipelineRunFinishedCDEvent */
+//        pipelinerunFinishedCDEvent.setSource(URI.create(source));
+//
+//        /* set the required subject fields to the pipelineRunFinishedCDEvent */
+//        pipelinerunFinishedCDEvent.setSubjectId(uuid.toString());
+//        pipelinerunFinishedCDEvent.setSubjectSource(URI.create(source));
+//        pipelinerunFinishedCDEvent.setSubjectUrl(source);
+//        pipelinerunFinishedCDEvent.setSubjectOutcome(CDEventConstants.Outcome.SUCCESS.getOutcome());
+//        pipelinerunFinishedCDEvent.setSubjectPipelineName(type);
+//        pipelinerunFinishedCDEvent.setSubjectErrors("pipelineErrors");
+//        pipelinerunFinishedCDEvent.setCustomDataContentType("application/json");
 
-        /* set the required context fields to the pipelineRunFinishedCDEvent */
-        pipelinerunFinishedCDEvent.setSource(URI.create(source));
+//        PipelinerunStartedCDEvent pipelinerunStartedCDEvent = new PipelinerunStartedCDEvent();
+//
+//        pipelinerunStartedCDEvent.setSubjectId(uuid.toString());
+//        pipelinerunStartedCDEvent.setSource(URI.create(source));
+//        pipelinerunStartedCDEvent.setSubjectPipelineName(type);
+//        pipelinerunStartedCDEvent.setSubjectSource(URI.create(source));
 
-        /* set the required subject fields to the pipelineRunFinishedCDEvent */
-        pipelinerunFinishedCDEvent.setSubjectId(uuid.toString());
-        pipelinerunFinishedCDEvent.setSubjectSource(URI.create(source));
-        pipelinerunFinishedCDEvent.setSubjectUrl(source);
-        pipelinerunFinishedCDEvent.setSubjectOutcome(CDEventConstants.Outcome.SUCCESS.getOutcome());
-        pipelinerunFinishedCDEvent.setSubjectPipelineName(type);
-        pipelinerunFinishedCDEvent.setSubjectErrors("pipelineErrors");
 
         /* Create a CloudEvent from a pipelineRunFinishedCDEvent */
-        CloudEvent ceEvent = CDEvents.cdEventAsCloudEvent(pipelinerunFinishedCDEvent);
+//        CloudEvent ceEvent = CDEvents.cdEventAsCloudEvent(pipelinerunStartedCDEvent);
 
-        return ceEvent;
+        // Constructs the CloudEvent in Binary Format
+        CloudEvent cloudEvent = new CloudEventBuilder()
+                .withId(uuid.toString())
+                .withSource(URI.create(source))
+                .withType(type)
+                .withDataContentType("application/json")
+                .withData(cloudEventPayLoad.getBytes(StandardCharsets.UTF_8))
+                .build();
 
+        return cloudEvent;
 
     }
 
@@ -83,7 +105,7 @@ public class HTTPSink extends CloudEventsSink{
         try{
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
-            httpURLConnection.setRequestMethod("post");
+            httpURLConnection.setRequestMethod("POST");
 
 
             MessageWriter messageWriter = createMessageWriter(httpURLConnection);
@@ -93,6 +115,9 @@ public class HTTPSink extends CloudEventsSink{
         }catch (ProtocolException p){
             p.printStackTrace();
         }
+
+        int responseCode = httpURLConnection.getResponseCode();
+        LOGGER.log(Level.INFO, String.format("Received response: %s", responseCode));
 
     }
 
