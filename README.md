@@ -31,7 +31,7 @@ The plugin provides two main classes:
 
 
 ## Screenshot
-### This COnfiguration Page look simiar to this
+### This Configuration Page look similar to this
 ![jenkins-plugin-ss](./src/main/resources/webapp/img/ce-plugin-ss.png)
 
 ### JSON Schema Received to Sockeye
