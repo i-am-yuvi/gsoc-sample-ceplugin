@@ -28,7 +28,7 @@ public enum CurrentStage {
         String sinkUrl = CloudEvents.get().getSinkURL();
 
         for(String event : CloudEvents.get().getEvents()) {
-            if (shouldSendBuild(event, run.getResult()) {
+            if (shouldSendBuild(event, run.getResult())) {
 
                 try {
                     JobModel jobModel = buildJobModel(run.getParent(), run, timestamp, taskListener);
@@ -38,18 +38,19 @@ public enum CurrentStage {
                     switch (CloudEvents.get().getSinkType()){
                         case "http":
                             HTTPSink httpsink = new HTTPSink();
-                            httpsink.sendCloudEvent(sinkURL, jobModel);
+
+                            httpsink.sendCloudEvent(sinkUrl, jobModel);
                             break;
                         case "kafka":
-                            KafkaSink kafkaSink = new KafkaSink();
-                            kafkaSink.sendCloudEvent(sinkURL, jobModel);
+//                            KafkaSink kafkaSink = new KafkaSink();
+//                            kafkaSink.sendCloudEvent(sinkUrl, jobModel);
                             break;
                         default:
                             break;
                         }
 
                     } catch (Throwable error){
-                    Logger.log(Level.WARNING, "Failed to notify the Sink. Error: " + error.getMessage());
+                    LOGGER.log(Level.WARNING, "Failed to notify the Sink. Error: " + error.getMessage());
                 }
 
 

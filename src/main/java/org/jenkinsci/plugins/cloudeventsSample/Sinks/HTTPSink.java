@@ -48,7 +48,7 @@ public class HTTPSink extends CloudEventsSink{
 
         /* set the required subject fields to the pipelineRunFinishedCDEvent */
         pipelinerunFinishedCDEvent.setSubjectId(uuid.toString());
-        pipelinerunFinishedCDEvent.setSubjectSource(URI.create(source);
+        pipelinerunFinishedCDEvent.setSubjectSource(URI.create(source));
         pipelinerunFinishedCDEvent.setSubjectUrl(source);
         pipelinerunFinishedCDEvent.setSubjectOutcome(CDEventConstants.Outcome.SUCCESS.getOutcome());
         pipelinerunFinishedCDEvent.setSubjectPipelineName(type);
@@ -71,6 +71,10 @@ public class HTTPSink extends CloudEventsSink{
             cloudEventToPost = buildCloudEvent(data);
         }catch (NoSuchMethodException e){
             e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
 
         URL url = new URL(sinkURL);
