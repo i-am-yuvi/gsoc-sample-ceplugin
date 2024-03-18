@@ -27,4 +27,4 @@ The plugin provides two main classes:
 
 
 ## Screenshot
-![jenkins-plugin-ss](./src/main/resources/webapp/img/jenkins-plugin-ss.png)
+![jenkins-plugin-ss](./src/main/resources/webapp/img/ce-plugin-ss.png)
