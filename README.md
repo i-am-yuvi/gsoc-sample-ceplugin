@@ -34,5 +34,5 @@ The plugin provides two main classes:
 ### This Configuration Page look similar to this
 ![jenkins-plugin-ss](./src/main/resources/webapp/img/ce-plugin-ss.png)
 
-### JSON Schema Received to Sockeye
+### JSON Schema Received by Sockeye for Item Created Event From Jenkins
 ![json-received-schema-ss](./src/main/resources/webapp/img/json-received-ss.png)
