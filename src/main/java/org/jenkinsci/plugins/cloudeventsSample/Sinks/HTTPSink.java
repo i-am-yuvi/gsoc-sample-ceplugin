@@ -1,12 +1,6 @@
 package org.jenkinsci.plugins.cloudeventsSample.Sinks;
 
-import dev.cdevents.CDEvents;
-import dev.cdevents.constants.CDEventConstants;
-import dev.cdevents.events.PipelinerunFinishedCDEvent;
-import dev.cdevents.events.PipelinerunStartedCDEvent;
-import dev.cdevents.events.TaskrunFinishedCDEvent;
-import dev.cdevents.events.TaskrunStartedCDEvent;
-import dev.cdevents.models.pipelinerun.started.Subject;
+
 import io.cloudevents.CloudEvent;
 import io.cloudevents.core.message.MessageWriter;
 import io.cloudevents.core.v1.CloudEventBuilder;
@@ -45,39 +39,17 @@ public class HTTPSink extends CloudEventsSink{
         String cloudEventPayLoad = CloudEventsUtil.convertToJson(data);
 
 
-
-//        PipelinerunFinishedCDEvent pipelinerunFinishedCDEvent =  new PipelinerunFinishedCDEvent();
-//
-//        /* set the required context fields to the pipelineRunFinishedCDEvent */
-//        pipelinerunFinishedCDEvent.setSource(URI.create(source));
-//
 //        /* set the required subject fields to the pipelineRunFinishedCDEvent */
-//        pipelinerunFinishedCDEvent.setSubjectId(uuid.toString());
-//        pipelinerunFinishedCDEvent.setSubjectSource(URI.create(source));
-//        pipelinerunFinishedCDEvent.setSubjectUrl(source);
-//        pipelinerunFinishedCDEvent.setSubjectOutcome(CDEventConstants.Outcome.SUCCESS.getOutcome());
-//        pipelinerunFinishedCDEvent.setSubjectPipelineName(type);
-//        pipelinerunFinishedCDEvent.setSubjectErrors("pipelineErrors");
-//        pipelinerunFinishedCDEvent.setCustomDataContentType("application/json");
-
-//        PipelinerunStartedCDEvent pipelinerunStartedCDEvent = new PipelinerunStartedCDEvent();
-//
-//        pipelinerunStartedCDEvent.setSubjectId(uuid.toString());
-//        pipelinerunStartedCDEvent.setSource(URI.create(source));
-//        pipelinerunStartedCDEvent.setSubjectPipelineName(type);
-//        pipelinerunStartedCDEvent.setSubjectSource(URI.create(source));
-
-
-        /* Create a CloudEvent from a pipelineRunFinishedCDEvent */
-//        CloudEvent ceEvent = CDEvents.cdEventAsCloudEvent(pipelinerunStartedCDEvent);
-
+        String typeDef = "pipelineRun";
         // Constructs the CloudEvent in Binary Format
         CloudEvent cloudEvent = new CloudEventBuilder()
-                .withId(uuid.toString())
-                .withSource(URI.create(source))
-                .withType(type)
+                .withType("org.jenkinsci.cdevents.pipelinerun.started.0.1.1")
                 .withDataContentType("application/json")
-                .withData(cloudEventPayLoad.getBytes(StandardCharsets.UTF_8))
+                .withSubject(typeDef)
+                .withSubject(typeDef).withId(uuid.toString())
+                .withSubject(typeDef).withSource(URI.create(source))
+                .withSubject(typeDef).withType(typeDef)
+                .withSubject(typeDef).withData(cloudEventPayLoad.getBytes(StandardCharsets.UTF_8))
                 .build();
 
         return cloudEvent;
@@ -120,7 +92,5 @@ public class HTTPSink extends CloudEventsSink{
         LOGGER.log(Level.INFO, String.format("Received response: %s", responseCode));
 
     }
-
-
 
 }
