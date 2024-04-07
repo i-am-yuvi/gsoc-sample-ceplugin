@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
+import java.util.Locale;
 
 public class JobModel {
 
@@ -87,12 +88,12 @@ public class JobModel {
         this.userName = userName;
     }
 
-    public Date getCreatedDate() {
-        return new Date(createdDate.getTime());
-    }
-
     public void setCreatedDate(Date createdDate) {
         this.createdDate = new Date(createdDate.getTime());
+    }
+
+    public Date getCreatedDate() {
+        return new Date(createdDate.getTime());
     }
 
     public Date getUpdatedDate() {
@@ -143,10 +144,10 @@ public class JobModel {
             if (this.getBuild().getPhase().toString().equals("FINALIZED") && this.getBuild().getStatus().equals("FAILURE") && this.getStage().equals("failed")) {
                 return JENKINS_SOURCE + "failed";
             } else {
-                return JENKINS_SOURCE + this.getBuild().getPhase().toString().toLowerCase();
+                return JENKINS_SOURCE + this.getBuild().getPhase().toString().toLowerCase(Locale.ROOT);
             }
         } else {
-            return JENKINS_SOURCE + this.getStatus().toLowerCase();
+            return JENKINS_SOURCE + this.getStatus().toLowerCase(Locale.ROOT);
         }
 
     }

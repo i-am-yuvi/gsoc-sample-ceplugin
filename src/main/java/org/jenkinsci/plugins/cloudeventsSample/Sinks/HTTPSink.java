@@ -43,7 +43,7 @@ public class HTTPSink extends CloudEventsSink{
         CloudEvent cloudEvent = new CloudEventBuilder()
                 .withId(uuid.toString())
                 .withSource(URI.create(source))
-                .withType("org.jenkinsci.cdevents.item.created.0.1.1")
+                .withType(type)
                 .withTime(timestamp)
                 .withDataContentType("application/json")
                 .withSubject(cloudEventPayLoad)

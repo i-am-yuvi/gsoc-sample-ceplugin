@@ -18,6 +18,9 @@
         <revision>1.0.0</revision>
         <changelist>-SNAPSHOT</changelist>
         <jenkins.version>2.401.3</jenkins.version>
+        <spotbugs.effort>Max</spotbugs.effort>
+        <spotbugs.failOnError>true</spotbugs.failOnError>
+        <spotbugs.threshold>Low</spotbugs.threshold>
         <java.level>8</java.level>
         <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
     </properties>

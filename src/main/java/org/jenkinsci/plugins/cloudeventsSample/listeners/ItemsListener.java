@@ -1,12 +1,11 @@
 package org.jenkinsci.plugins.cloudeventsSample.listeners;
 
 import hudson.Extension;
-import hudson.model.Hudson;
 import hudson.model.Item;
 import org.jenkinsci.plugins.cloudeventsSample.CurrentStage;
 
 @Extension
-public class ItemListener extends hudson.model.listeners.ItemListener {
+public class ItemsListener extends hudson.model.listeners.ItemListener {
 
     @Override
     public void onCreated(Item item){
