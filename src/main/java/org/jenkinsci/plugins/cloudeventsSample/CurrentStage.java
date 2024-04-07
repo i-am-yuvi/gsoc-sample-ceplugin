@@ -11,6 +11,7 @@ import org.jenkinsci.plugins.cloudeventsSample.models.ScmState;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -195,11 +196,11 @@ public enum CurrentStage {
     }
 
     private boolean shouldSendItem(String event) {
-        return event.equals(this.toString().toLowerCase());
+        return event.equals(this.toString().toLowerCase(Locale.ROOT));
     }
 
-    //sending events related to run of a job
 
+    //sending events related to run of a job
     public boolean shouldSendBuild(String event, Result result){
 
         switch (event){
@@ -210,7 +211,7 @@ public enum CurrentStage {
                 return this.equals(FINALIZED) && result.equals(Result.FAILURE);
 
             default:
-                return event.equals(this.toString().toLowerCase());
+                return event.equals(this.toString().toLowerCase(Locale.ROOT));
         }
     }
 }
