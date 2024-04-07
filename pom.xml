@@ -55,6 +55,14 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>i-am-yuvi</id>
+            <name>Yuvraj Chhetri</name>
+            <email>yuvichh01@gmail.com</email>
+        </developer>
+    </developers>
+
     <dependencies>
 
         <dependency>
