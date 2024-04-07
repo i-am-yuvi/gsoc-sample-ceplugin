@@ -4,7 +4,6 @@ package org.jenkinsci.plugins.cloudeventsSample.Sinks;
 import io.cloudevents.CloudEvent;
 import io.cloudevents.core.message.MessageWriter;
 import io.cloudevents.core.v1.CloudEventBuilder;
-import org.jenkinsci.plugins.cloudeventsSample.CloudEvents;
 import org.jenkinsci.plugins.cloudeventsSample.CloudEventsSink;
 import org.jenkinsci.plugins.cloudeventsSample.CloudEventsUtil;
 
@@ -15,7 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URI;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,18 +37,16 @@ public class HTTPSink extends CloudEventsSink{
 
         String cloudEventPayLoad = CloudEventsUtil.convertToJson(data);
 
+        OffsetDateTime timestamp = OffsetDateTime.now();
 
-//        /* set the required subject fields to the pipelineRunFinishedCDEvent */
-        String typeDef = "pipelineRun";
         // Constructs the CloudEvent in Binary Format
         CloudEvent cloudEvent = new CloudEventBuilder()
-                .withType("org.jenkinsci.cdevents.pipelinerun.started.0.1.1")
+                .withId(uuid.toString())
+                .withSource(URI.create(source))
+                .withType("org.jenkinsci.cdevents.item.created.0.1.1")
+                .withTime(timestamp)
                 .withDataContentType("application/json")
-                .withSubject(typeDef)
-                .withSubject(typeDef).withId(uuid.toString())
-                .withSubject(typeDef).withSource(URI.create(source))
-                .withSubject(typeDef).withType(typeDef)
-                .withSubject(typeDef).withData(cloudEventPayLoad.getBytes(StandardCharsets.UTF_8))
+                .withSubject(cloudEventPayLoad)
                 .build();
 
         return cloudEvent;
